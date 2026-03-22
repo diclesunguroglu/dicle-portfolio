@@ -43,6 +43,12 @@
       justify-content: space-between;
       padding: 20px 40px;
       mix-blend-mode: difference;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    nav.nav-hidden {
+      transform: translateY(-100%);
+      opacity: 0;
     }
 
     .nav-logo {
@@ -587,6 +593,15 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* Hide nav on scroll down, show on scroll up */
+    const nav = document.querySelector('nav');
+    let lastY = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      nav.classList.toggle('nav-hidden', y > lastY && y > 80);
+      lastY = y;
+    }, { passive: true });
 
     /* Country pill active state — Spain active by default */
     let activePill = document.querySelector('.globe-country-list li.active');

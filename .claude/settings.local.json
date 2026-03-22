@@ -15,7 +15,11 @@
       "Bash(for i:*)",
       "Bash(do echo:*)",
       "Read(//Users/diclesunguroglu/Desktop/workspace/tasarımlar/portfolio-lp/**)",
-      "Bash(unzip -l \"Verity _ trial -Dicle.zip\")"
+      "Bash(unzip -l \"Verity _ trial -Dicle.zip\")",
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
