@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:belleduffner.com)",
+      "Bash(open:*)",
+      "Bash(cp \"/Users/diclesunguroglu/Downloads/minnosh-sequence 1.svg\" \"/Users/diclesunguroglu/Desktop/workspace/tasarımlar/portfolio-lp/assets/minnosh-1.svg\")",
+      "Bash(cp \"/Users/diclesunguroglu/Downloads/minnosh-sequence-2.svg\" \"/Users/diclesunguroglu/Desktop/workspace/tasarımlar/portfolio-lp/assets/minnosh-2.svg\")",
+      "Skill(update-config)",
+      "Read(//Users/diclesunguroglu/Desktop/workspace/tasarımlar/**)",
+      "Bash(npx create-next-app@latest portfolio-next --js --no-tailwind --eslint --app --no-src-dir --no-turbopack --import-alias \"@/*\" --no-react-compiler)",
+      "Bash(mkdir -p /Users/diclesunguroglu/Desktop/workspace/tasarımlar/portfolio-lp/assets/works)",
+      "Bash(for f:*)",
+      "Bash(do unzip:*)",
+      "Bash(done)",
+      "Bash(for i:*)",
+      "Bash(do echo:*)",
+      "Read(//Users/diclesunguroglu/Desktop/workspace/tasarımlar/portfolio-lp/**)",
+      "Bash(unzip -l \"Verity _ trial -Dicle.zip\")"
+    ]
+  }
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dicle Sunguroglu — Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.69/build/spline-viewer.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #000;
+      --text:   #fff;
+      --muted:  rgba(255,255,255,0.38);
+      --border: rgba(255,255,255,0.1);
+      --font:   'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    em { font-style: italic; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero spline-viewer {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ── SHARED SECTION ── */
+    .section {
+      border-top: 1px solid var(--border);
+      padding: 64px 40px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0 60px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+
+    /* ── WORK ── */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .work-item {
+      padding: 0 40px 48px 40px;
+    }
+
+    /* left column — no left padding */
+    .work-item:nth-child(3n+1) { padding-left: 0; }
+
+    /* right column — no right padding, no border */
+    .work-item:nth-child(3n) { padding-right: 0; }
+
+    /* col 1 & 2 — vertical divider */
+    .work-item:not(:nth-child(3n)) { border-right: 1px solid var(--border); }
+
+    /* row 2 — horizontal divider + top spacing */
+    .work-item:nth-child(n+4) {
+      border-top: 1px solid var(--border);
+      padding-top: 40px;
+    }
+
+    .work-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .work-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .work-link {
+      font-size: 11px;
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      letter-spacing: 0.02em;
+    }
+
+    .work-link:hover { color: var(--muted); }
+
+    /* ── PROFILE ── */
+    .profile-text {
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 300;
+      line-height: 1.55;
+      letter-spacing: -0.02em;
+      max-width: 720px;
+    }
+
+    .profile-text p + p { margin-top: 1.4em; }
+
+    /* ── ROLES ── */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 60px;
+    }
+
+    .role-item {
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .role-item:nth-child(-n+2) { border-top: none; padding-top: 0; }
+
+    .role-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .role-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .role-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CAPABILITIES ── */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 60px;
+    }
+
+    .cap-group { padding-bottom: 40px; }
+
+    .cap-group-title {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .cap-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cap-list li {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── GLOBE ── */
+    .globe-body {
+      display: grid;
+      grid-template-columns: 1fr 160px;
+      gap: 0 48px;
+      align-items: start;
+    }
+
+    .globe-viewer {
+      position: relative;
+      width: calc(100% + 80px);
+      margin-left: -80px;
+      height: 620px;
+      overflow: hidden;
+    }
+
+    .globe-viewer spline-viewer {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .globe-fade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 55% at 45% 50%, transparent 55%, #000 100%);
+    }
+
+    .globe-sidebar { padding-top: 8px; }
+
+    .globe-sidebar-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .globe-country-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .globe-country-list li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 100px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .globe-country-list li:hover {
+      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .globe-country-list li.active {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    /* ── CONTACT ── */
+    .contact-body {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .contact-line {
+      font-size: clamp(24px, 3vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .contact-email {
+      font-size: 14px;
+      font-weight: 300;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .contact-email:hover { color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── FADE IN ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .section {
+        grid-template-columns: 1fr;
+        gap: 24px 0;
+        padding: 48px 24px;
+      }
+
+      .work-grid { grid-template-columns: 1fr; }
+      .work-item { border-right: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 32px; }
+      .work-item:first-child { border-top: none; padding-top: 0; }
+
+      .roles-grid { grid-template-columns: 1fr; }
+      .role-item:nth-child(-n+2) { border-top: 1px solid var(--border); }
+      .role-item:first-child { border-top: none; }
+
+      .cap-grid { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+
+      nav { padding: 16px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">Dicle Sunguroglu</span>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#profile">Profile</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <spline-viewer url="https://prod.spline.design/Rz5KCXGeIC3CoTCC/scene.splinecode"></spline-viewer>
+    <h1 class="sr-only">Hello! This is Dicle — A Product Designer Based in Turkey</h1>
+  </section>
+
+  <!-- WORK -->
+  <div id="work" class="section fade-up">
+    <span class="section-label">Select Projects</span>
+    <div class="work-grid">
+
+      <div class="work-item">
+        <div class="work-title">ADVSR AI – Real Estate SaaS</div>
+        <p class="work-desc">Designed a collaborative marketing platform that connects advisors with property globally, enabling real‑estate professionals to share listings in a unique, branded environment and reach buyers around the world.</p>
+        <a href="https://advsr.ai" target="_blank" rel="noopener" class="work-link">Visit advsr.ai →</a>
+      </div>
+
+      <div class="work-item">
+        <div class="work-title">Manuel AI – AI‑Powered HVAC Assistant</div>
+        <p class="work-desc">Designed the MVP of an AI‑powered HVAC assistant in collaboration with business specialists. Led usability testing with target users, synthesized insights using heuristic evaluation, and restructured information architecture and navigation. Improved task success, reduced time on task, and supported a stronger product direction through early validation.</p>
+        <a href="https://manuel.chat/en/product" target="_blank" rel="noopener" class="work-link">Visit manuel.chat →</a>
+      </div>
+
+      <div class="work-item">
+        <div class="work-title">Strong Girl Society – iOS & Watch App</div>
+        <p class="work-desc">Developed a full iOS and Apple Watch experience for a women's wellness community. The design includes metrics for heart rate, calories, distance and daily goals, encouraging healthy habits through engaging interfaces.</p>
+        <a href="https://www.instagram.com/stronggirlsociety/?hl=en" target="_blank" rel="noopener" class="work-link">View on Instagram →</a>
+      </div>
+
+      <div class="work-item">
+        <div class="work-title">Healthcare SaaS Dashboard</div>
+        <p class="work-desc">Reimagined a healthcare SaaS platform with intuitive workflows, patient‑centric dashboards and scalable UI components — improving data clarity for clinicians and administrators.</p>
+        <a href="https://www.behance.net/gallery/239524451/HEALTHCARE-SAAS-UI-UX-CASE-STUDY" target="_blank" rel="noopener" class="work-link">Case Study →</a>
+      </div>
+
+      <div class="work-item">
+        <div class="work-title">Travi – Gamified Travel App</div>
+        <p class="work-desc">Created a gamified trip‑planning app that transforms itineraries into interactive journeys, motivating users to explore destinations and collect rewards as they travel.</p>
+        <a href="https://www.behance.net/gallery/196198241/Travi-Gamified-Travel-App" target="_blank" rel="noopener" class="work-link">Case Study →</a>
+      </div>
+
+      <div class="work-item">
+        <div class="work-title">monney – FinTech Mobile App</div>
+        <p class="work-desc">Crafted a mini case study for a micro‑finance app with frictionless onboarding, secure transactions and clear budgeting tools that make personal finance approachable.</p>
+        <a href="https://www.behance.net/gallery/224423473/monney-Fin-Tech-App-(Mini-Case-Study)" target="_blank" rel="noopener" class="work-link">Case Study →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="section fade-up">
+    <span class="section-label">Profile</span>
+    <div class="profile-text">
+      <p>I approach every project as a problem to understand before anything else. Not just how it looks, but why it exists, what is not working, and where things break down. I bring a calm, structured way of thinking into teams, breaking complexity into clear parts and turning ambiguity into direction.</p>
+      <p>I think in systems, not just screens. Starting simple, making decisions early, and shaping ideas into something intentional and usable. The goal is always the same. Solve the right problem and make the solution feel effortless.</p>
+    </div>
+  </div>
+
+  <!-- ROLES -->
+  <div id="roles" class="section fade-up">
+    <span class="section-label">Roles</span>
+    <div class="roles-grid">
+
+      <div class="role-item">
+        <div class="role-date">September 2023 – Present</div>
+        <div class="role-title">Freelance Product Designer</div>
+        <p class="role-desc">Working across early stage startups and growing products, leading design from concept to delivery. I focus on simplifying complex systems, improving usability, and building scalable design foundations across different products.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-date">2025 – Present</div>
+        <div class="role-title">Product Designer — ADVSR.ai</div>
+        <p class="role-desc">Designed core platform experiences for a global real estate network, improving complex advisory workflows and overall product clarity.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-date">2024 – 2026</div>
+        <div class="role-title">Product Designer — OnePlusTwo (UK)</div>
+        <p class="role-desc">Led product design for POS and kiosk systems, creating faster, more intuitive ordering flows and improving day to day operations.</p>
+      </div>
+
+      <div class="role-item">
+        <div class="role-date">2025</div>
+        <div class="role-title">Product & UI Designer — Strong Girl Society</div>
+        <p class="role-desc">Designed the iOS and Apple Watch experience, focusing on fast, glanceable interactions and clear health tracking.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CAPABILITIES -->
+  <div id="capabilities" class="section fade-up">
+    <span class="section-label">Capabilities</span>
+    <div class="cap-grid">
+
+      <div>
+        <div class="cap-group">
+          <div class="cap-group-title">Tools</div>
+          <ul class="cap-list">
+            <li>Claude Code</li>
+            <li>Figma</li>
+            <li>Figma MCP</li>
+            <li>Jira</li>
+            <li>Jitter</li>
+            <li>LottieFiles</li>
+            <li>Miro</li>
+            <li>Spline</li>
+          </ul>
+        </div>
+        <div class="cap-group">
+          <div class="cap-group-title">Platforms</div>
+          <ul class="cap-list">
+            <li>Notion</li>
+            <li>Trello</li>
+            <li>Vercel</li>
+            <li>shadcn/ui</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="cap-group">
+          <div class="cap-group-title">Skills</div>
+          <ul class="cap-list">
+            <li>A/B Testing</li>
+            <li>Accessibility</li>
+            <li>CSS</li>
+            <li>Design Systems</li>
+            <li>Developer Handoff</li>
+            <li>HTML</li>
+            <li>Information Architecture</li>
+            <li>Usability Testing</li>
+            <li>Wireframing & Prototyping</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- CONTACT -->
+  <div id="contact" class="section fade-up">
+    <span class="section-label">Contact</span>
+    <div class="contact-body">
+      <div class="contact-line">Got a project<br /><em>in mind?</em></div>
+      <a href="mailto:diclesunguroglu@gmail.com" class="contact-email">diclesunguroglu@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© 2026 Dicle Sunguroglu</span>
+    <ul class="footer-links">
+      <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+      <li><a href="https://dribbble.com" target="_blank">Dribbble</a></li>
+      <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* Country pill active state — Spain active by default */
+    let activePill = document.querySelector('.globe-country-list li.active');
+    document.querySelectorAll('.globe-country-list li').forEach(li => {
+      li.addEventListener('click', () => {
+        if (activePill === li) {
+          li.classList.remove('active');
+          activePill = null;
+        } else {
+          if (activePill) activePill.classList.remove('active');
+          li.classList.add('active');
+          activePill = li;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

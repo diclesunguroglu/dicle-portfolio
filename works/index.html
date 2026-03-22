@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthcare SaaS Dashboard — Dicle Sunguroglu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #000;
+      --text:   #fff;
+      --muted:  rgba(255,255,255,0.38);
+      --border: rgba(255,255,255,0.08);
+      --gap:    3px;
+      --font:   'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav-back {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+    .nav-back::before { content: "← "; }
+
+    .nav-title {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 132px 40px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero-title {
+      font-size: clamp(26px, 3.5vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+      padding: var(--gap);
+    }
+
+    /* Full-width item */
+    .full { grid-column: 1 / -1; }
+
+    /* Grid cell */
+    .cell {
+      overflow: hidden;
+      background: #0a0a0a;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .cell.visible { opacity: 1; transform: translateY(0); }
+
+    .cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: zoom-in;
+      transition: transform 0.4s ease;
+    }
+    .cell img:hover { transform: scale(1.015); }
+
+    /* Force consistent height per row type */
+    .cell.full img   { height: 72vw; max-height: 860px; object-position: top; }
+    .cell.half img   { height: 36vw; max-height: 430px; object-position: top; }
+    .cell.wide img   { height: 52vw; max-height: 620px; object-position: top; }
+
+    /* Section divider */
+    .divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0 0;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.96);
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 4px;
+      cursor: default;
+      user-select: none;
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 20px; right: 28px;
+      font-size: 32px;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .lb-close:hover { color: var(--text); }
+
+    .lb-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lb-nav:hover { color: var(--text); border-color: rgba(255,255,255,0.35); }
+    .lb-prev { left: 20px; }
+    .lb-next { right: 20px; }
+
+    .lb-counter {
+      position: absolute;
+      bottom: 20px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.1em; color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 100px 20px 48px; }
+      .grid { gap: 2px; padding: 2px; }
+      .cell.full img  { height: 100vw; max-height: none; }
+      .cell.half img  { height: 50vw;  max-height: none; }
+      .cell.wide img  { height: 70vw;  max-height: none; }
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; }
+      .cell.half img { height: 80vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-back">Back to Portfolio</a>
+    <span class="nav-title">Case Study</span>
+  </nav>
+
+  <div class="hero">
+    <span class="hero-label">Healthcare SaaS</span>
+    <h1 class="hero-title">Healthcare SaaS Dashboard</h1>
+    <p class="hero-desc">Reimagined a healthcare SaaS platform with intuitive workflows, patient‑centric dashboards and scalable UI components — improving data clarity for clinicians and administrators.</p>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="cell full"><img src="../assets/works/Frame 2121453606.png" alt="Overview" loading="eager" /></div>
+
+    <!-- ── DASHBOARD ── -->
+    <div class="cell half"><img src="../assets/works/dashboard/dark.png"   alt="Dashboard" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/dashboard/dark-1.png" alt="Dashboard 1" loading="lazy" /></div>
+    <div class="cell full"><img src="../assets/works/dashboard/dark-2.png" alt="Dashboard 2" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/dashboard/dark-3.png" alt="Dashboard 3" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/dashboard/dark-4.png" alt="Dashboard 4" loading="lazy" /></div>
+
+    <div class="divider"></div>
+
+    <!-- ── REPORTS ── -->
+    <div class="cell full"><img src="../assets/works/reports-kanban-active.jpg"   alt="Reports – Active"   loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/reports-kanban-history.jpg"  alt="Reports – History"  loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/reports-kanban-detail.jpg"   alt="Reports – Detail"   loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/reports-kanban-detail-1.jpg" alt="Reports – Detail 1" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/reports-kanban-detail-2.jpg" alt="Reports – Detail 2" loading="lazy" /></div>
+    <div class="cell full"><img src="../assets/works/reports-kanban-escalate.jpg" alt="Reports – Escalate" loading="lazy" /></div>
+
+    <div class="divider"></div>
+
+    <!-- ── USERS ── -->
+    <div class="cell full"><img src="../assets/works/users.jpg"           alt="Users"          loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users/active.jpg"    alt="Users – Active" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users/suspended.jpg" alt="Users – Suspended" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users/flagged.jpg"   alt="Users – Flagged" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users-1.jpg"         alt="Users 1"        loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users-detail.jpg"    alt="Users – Detail" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/users-2.jpg"         alt="Users 2"        loading="lazy" /></div>
+
+    <div class="divider"></div>
+
+    <!-- ── COMMUNITY ── -->
+    <div class="cell half"><img src="../assets/works/community.png"         alt="Community"          loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/community-details.png" alt="Community – Details" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/create-community.png"  alt="Community – Create"  loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/review-community.png"  alt="Community – Review"  loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/delete-community.png"  alt="Community – Delete"  loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/edit-community.png"    alt="Community – Edit"    loading="lazy" /></div>
+
+    <div class="divider"></div>
+
+    <!-- ── TICKETS ── -->
+    <div class="cell full"><img src="../assets/works/ticket-kanban.jpg"              alt="Ticket – Kanban"      loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-kanban-1.jpg"            alt="Ticket – Kanban alt"  loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/a version.png"                  alt="Version A"            loading="lazy" /></div>
+    <div class="cell full"><img src="../assets/works/ticket-default.png"             alt="Ticket – Default"     loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-selected.png"            alt="Ticket – Selected"    loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-selected-1.png"          alt="Ticket – Selected alt" loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-replying.png"            alt="Ticket – Replying"    loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-add comment.png"         alt="Ticket – Comment"     loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-details.png"             alt="Ticket – Details"     loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/ticket-marked as resolved.png"  alt="Ticket – Resolved"    loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/history.png"                    alt="History"              loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/admin ticket-no archived.png"   alt="Admin – Archived"     loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/admin ticket-empty state.png"   alt="Admin – Empty"        loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/admin ticket-loading state.png" alt="Admin – Loading"      loading="lazy" /></div>
+
+    <div class="divider"></div>
+
+    <!-- ── WIKIS ── -->
+    <div class="cell half"><img src="../assets/works/wikis.png"   alt="Wikis"   loading="lazy" /></div>
+    <div class="cell half"><img src="../assets/works/wikis-1.png" alt="Wikis 1" loading="lazy" /></div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lb-close">×</button>
+    <button class="lb-nav lb-prev" id="lb-prev">‹</button>
+    <img id="lb-img" src="" alt="" />
+    <button class="lb-nav lb-next" id="lb-next">›</button>
+    <span class="lb-counter" id="lb-counter"></span>
+  </div>
+
+  <script>
+    /* Fade-in */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.04 });
+    document.querySelectorAll('.cell').forEach(el => io.observe(el));
+
+    /* Lightbox */
+    const imgs     = Array.from(document.querySelectorAll('.cell img'));
+    const lb       = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lb-img');
+    const lbCount  = document.getElementById('lb-counter');
+    let cur = 0;
+
+    const open = i => {
+      cur = i;
+      lbImg.src = imgs[cur].src;
+      lbImg.alt = imgs[cur].alt;
+      lbCount.textContent = `${cur + 1} / ${imgs.length}`;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
+    const nav   = d  => open((cur + d + imgs.length) % imgs.length);
+
+    imgs.forEach((img, i) => img.addEventListener('click', () => open(i)));
+    document.getElementById('lb-close').addEventListener('click', close);
+    document.getElementById('lb-prev').addEventListener('click', e => { e.stopPropagation(); nav(-1); });
+    document.getElementById('lb-next').addEventListener('click', e => { e.stopPropagation(); nav(1); });
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  nav(-1);
+      if (e.key === 'ArrowRight') nav(1);
+    });
+  </script>
+
+</body>
+</html>
