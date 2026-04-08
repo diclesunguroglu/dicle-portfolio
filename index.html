@@ -614,5 +614,20 @@
     });
   </script>
 
+  <!-- Calendly badge widget begin -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <script type="text/javascript">
+    function initCalendly() {
+      if (typeof Calendly !== 'undefined') {
+        Calendly.initBadgeWidget({ url: 'https://calendly.com/diclesunguroglu/need-support-book-a-call', text: 'Let\'s talk design!', color: '#302e2e', textColor: '#ffffff', branding: true });
+      } else {
+        setTimeout(initCalendly, 500);
+      }
+    }
+    initCalendly();
+  </script>
+  <!-- Calendly badge widget end -->
+
 </body>
 </html>
