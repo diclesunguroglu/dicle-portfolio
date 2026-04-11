@@ -51,10 +51,14 @@
     }
 
     .nav-logo {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      display: block;
+      height: 22px;
+      width: auto;
     }
 
     .nav-links {
@@ -434,7 +438,9 @@
 
   <!-- NAV -->
   <nav>
-    <span class="nav-logo">Dicle Sunguroglu</span>
+    <a href="#" class="nav-logo" aria-label="Dicle Sunguroglu — home">
+      <img src="assets/d-logo.svg" alt="Dicle Sunguroglu logo" />
+    </a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
       <li><a href="#profile">Profile</a></li>
