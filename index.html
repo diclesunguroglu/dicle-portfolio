@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet" />
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.69/build/spline-viewer.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -80,12 +79,35 @@
       height: 100vh;
       position: relative;
       overflow: hidden;
+      background: #000;
     }
 
     .hero spline-viewer {
       display: block;
       width: 100%;
       height: 100%;
+    }
+
+    /* Lightweight animated fallback for mobile / low-power devices */
+    .hero-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(120,120,255,0.35), transparent 55%),
+        radial-gradient(circle at 70% 60%, rgba(255,120,180,0.25), transparent 60%),
+        radial-gradient(circle at 50% 80%, rgba(120,255,200,0.18), transparent 60%),
+        #000;
+      animation: heroPulse 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroPulse {
+      0%   { filter: hue-rotate(0deg) brightness(1); transform: scale(1); }
+      100% { filter: hue-rotate(40deg) brightness(1.1); transform: scale(1.05); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-fallback { animation: none; }
     }
 
     .sr-only {
@@ -422,8 +444,8 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <spline-viewer url="https://prod.spline.design/Rz5KCXGeIC3CoTCC/scene.splinecode"></spline-viewer>
+  <section class="hero" id="hero">
+    <div class="hero-fallback" aria-hidden="true"></div>
     <h1 class="sr-only">Hello! This is Dicle — A Product Designer Based in Turkey</h1>
   </section>
 
@@ -578,6 +600,48 @@
   </footer>
 
   <script>
+    /* ── Smart Spline loader ──
+       Spline's WebGL hero crashes or stalls on mid-range Android and low-memory
+       devices. We only load it on devices that can likely handle it, and always
+       show the CSS fallback behind it so users see something immediately. */
+    (function loadSpline() {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+      const lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+      const saveData = navigator.connection && navigator.connection.saveData;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Show fallback on mobile, touch devices, low memory, data saver, reduced motion
+      if (isMobile || isCoarsePointer || lowMemory || saveData || reducedMotion) {
+        document.querySelector('.hero-fallback').style.display = 'block';
+        return;
+      }
+
+      // Desktop: lazy-load Spline viewer script, then inject the viewer element
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://unpkg.com/@splinetool/viewer@1.12.69/build/spline-viewer.js';
+      script.onload = () => {
+        const hero = document.getElementById('hero');
+        const viewer = document.createElement('spline-viewer');
+        viewer.setAttribute('url', 'https://prod.spline.design/Rz5KCXGeIC3CoTCC/scene.splinecode');
+        hero.appendChild(viewer);
+      };
+      script.onerror = () => {
+        // If Spline fails to load, show the fallback instead
+        document.querySelector('.hero-fallback').style.display = 'block';
+      };
+      document.head.appendChild(script);
+
+      // Safety: if Spline never renders within 6s, show fallback
+      setTimeout(() => {
+        const viewer = document.querySelector('.hero spline-viewer');
+        if (!viewer || !viewer.shadowRoot) {
+          document.querySelector('.hero-fallback').style.display = 'block';
+        }
+      }, 6000);
+    })();
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -613,21 +677,6 @@
       });
     });
   </script>
-
-  <!-- Calendly badge widget begin -->
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-  <script type="text/javascript">
-    function initCalendly() {
-      if (typeof Calendly !== 'undefined') {
-        Calendly.initBadgeWidget({ url: 'https://calendly.com/diclesunguroglu/need-support-book-a-call', text: 'Let\'s talk design!', color: '#302e2e', textColor: '#ffffff', branding: true });
-      } else {
-        setTimeout(initCalendly, 500);
-      }
-    }
-    initCalendly();
-  </script>
-  <!-- Calendly badge widget end -->
 
 </body>
 </html>
